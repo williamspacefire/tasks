@@ -4,8 +4,7 @@ import { useState } from "react";
 
 export default function TaskList() {
 
-    let tasks = []
-    const [list, setList] = useState(["ola", "blz"])
+    const [list, setList] = useState([])
     let newTask = ""
 
     return (
@@ -14,36 +13,56 @@ export default function TaskList() {
                 <Add/>
             </Fab>
             <Paper style={{marginTop: "34px"}}>
+                <AddNewTask style={{display: "none"}}/>
                 <List 
                     component="nav"
                     subheader={
                         <ListSubheader component="div" id="nested-list-subheader">
-                        Tarefas para fazer
+                            TAREFAS A FAZER
                         </ListSubheader>
                     }>
-                        <AddNewTask style={{display: "none"}}/>
                         <Divider/>
                         {
-                            list.map((title, index) => {
-                                return <TaskListItem key={index} title={title}/>
+                            list.map((task, index) => {
+                                if (!task.completed)return <TaskListItem key={index} title={task.task} checked={task.completed} id={index}/>
                             })
                         }
                 </List>
+                <List 
+                    component="nav"
+                    subheader={
+                        <ListSubheader component="div" id="nested-list-subheader">
+                            TAREFAS COMPLETADAS
+                        </ListSubheader>
+                    }>
+                        <Divider/>
+                        {
+                            list.map((task, index) => {
+                                if (task.completed) return <TaskListItem key={index} title={task.task} checked={task.completed} id={index}/>
+                            })
+                        }
+                    </List>
             </Paper>
         </>
     )
 
     function addNewTask(e) {
         e.preventDefault()
-        
-        tasks.push(newTask)
-        setList([tasks])
-        newTask = ""
-        console.log(tasks)
+
+        setList([...list, {completed: false, task: newTask}])
+        console.log(JSON.stringify(list, null, 2))
     }
 
     function updateNewtask(e) {
         newTask = e.target.value
+    }
+
+    function handleCheck(e) {
+        const id = e.target.id
+        const cheked = e.target.checked
+        list[id].completed = cheked
+        
+        setList([...list])
     }
 
     function AddNewTask() {
@@ -58,12 +77,12 @@ export default function TaskList() {
         )
     }
     
-    function TaskListItem({ title }) {
+    function TaskListItem({ title, checked, id }) {
         return (
             <>
                 <ListItem>
                     <ListItemText>
-                        <Checkbox checked={false} />
+                        <Checkbox checked={checked} id={id} onChange={(e) => handleCheck(e)}/>
                         {title}
                     </ListItemText>
                 </ListItem>
