@@ -1,11 +1,10 @@
 import { Checkbox, Divider, Fab, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, ListSubheader, Paper, TextField } from "@material-ui/core";
 import { Add, Delete } from "@material-ui/icons";
-import { useState } from "react";
+import listLogic from '../list/listlogic'
 
 export default function TaskList() {
 
-    const [list, setList] = useState([])
-    let newTask = ""
+    const { list, addNewTask, updateNewtask, handleCheck, deleteTask } = listLogic()
 
     return (
         <>
@@ -45,32 +44,6 @@ export default function TaskList() {
             </Paper>
         </>
     )
-
-    function addNewTask(e) {
-        e.preventDefault()
-
-        setList([{completed: false, task: newTask}, ...list])
-        console.log(JSON.stringify(list, null, 2))
-    }
-
-    function updateNewtask(e) {
-        newTask = e.target.value
-    }
-
-    function handleCheck(e) {
-        const id = e.target.id
-        const cheked = e.target.checked
-        list[id].completed = cheked
-        
-        setList([...list])
-    }
-
-    function deleteTask(e, id) {
-        let listCopy = list
-        listCopy.splice(id, 1)  
-
-        setList([...listCopy])
-    }
 
     function AddNewTask() {
         return (
