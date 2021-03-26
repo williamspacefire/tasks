@@ -1,5 +1,5 @@
-import { Checkbox, Divider, Fab, List, ListItem, ListItemText, ListSubheader, Paper, TextField } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
+import { Checkbox, Divider, Fab, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, ListSubheader, Paper, TextField } from "@material-ui/core";
+import { Add, Delete } from "@material-ui/icons";
 import { useState } from "react";
 
 export default function TaskList() {
@@ -49,7 +49,7 @@ export default function TaskList() {
     function addNewTask(e) {
         e.preventDefault()
 
-        setList([...list, {completed: false, task: newTask}])
+        setList([{completed: false, task: newTask}, ...list])
         console.log(JSON.stringify(list, null, 2))
     }
 
@@ -65,6 +65,13 @@ export default function TaskList() {
         setList([...list])
     }
 
+    function deleteTask(e, id) {
+        let listCopy = list
+        listCopy.splice(id, 1)  
+
+        setList([...listCopy])
+    }
+
     function AddNewTask() {
         return (
             <>
@@ -76,7 +83,7 @@ export default function TaskList() {
             </>
         )
     }
-    
+        
     function TaskListItem({ title, checked, id }) {
         return (
             <>
@@ -85,6 +92,11 @@ export default function TaskList() {
                         <Checkbox checked={checked} id={id} onChange={(e) => handleCheck(e)}/>
                         {title}
                     </ListItemText>
+                    <ListItemSecondaryAction>
+                        <IconButton edge="end" aria-label="delete" onClick={(e) => deleteTask(e, id)}>
+                            <Delete />
+                        </IconButton>
+                  </ListItemSecondaryAction>
                 </ListItem>
             </>
         )
