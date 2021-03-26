@@ -49,8 +49,8 @@ export default function TaskList() {
         return (
             <>
                 <ListItem style={{padding: "20px"}}>
-                    <form action="/oi" onSubmit={(e) => addNewTask(e)}>
-                        <TextField onChange={(e) => updateNewtask(e)} style={{width: "100%"}} id="standard-basic" label="Adicionar nova tarefa" />
+                    <form action="/oi" onSubmit={addNewTask}>
+                        <TextField onChange={updateNewtask} style={{width: "100%"}} id="standard-basic" label="Adicionar nova tarefa" />
                     </form>
                 </ListItem>
             </>
@@ -62,7 +62,7 @@ export default function TaskList() {
             <>
                 <ListItem>
                     <ListItemText>
-                        <Checkbox checked={checked} id={id} onChange={(e) => handleCheck(e)}/>
+                        <Checkbox checked={checked} id={id} onChange={handleCheck}/>
                         {title}
                     </ListItemText>
                     <ListItemSecondaryAction>
