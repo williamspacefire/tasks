@@ -1,6 +1,6 @@
 import { Checkbox, Divider, Fab, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, ListSubheader, Paper, TextField } from "@material-ui/core";
 import { Add, Delete } from "@material-ui/icons";
-import listLogic from '../list/listlogic'
+import listLogic from '../lib/list'
 
 export default function TaskList() {
 
@@ -49,8 +49,8 @@ export default function TaskList() {
         return (
             <>
                 <ListItem style={{padding: "20px"}}>
-                    <form action="/oi" onSubmit={addNewTask}>
-                        <TextField onChange={updateNewtask} style={{width: "100%"}} id="standard-basic" label="Adicionar nova tarefa" />
+                    <form action="/" onSubmit={addNewTask}>
+                        <TextField onChange={updateNewtask} style={{width: "100%"}} id="add-new-task" label="Adicionar nova tarefa" />
                     </form>
                 </ListItem>
             </>

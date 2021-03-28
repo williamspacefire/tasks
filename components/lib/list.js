@@ -1,7 +1,9 @@
 import { useState } from "react";
 
 export default function listLogic() {
+    
     const [list, setList] = useState([])
+
     let newTask = ""
 
     function addNewTask(e) {
@@ -35,6 +37,6 @@ export default function listLogic() {
         addNewTask,
         updateNewtask,
         handleCheck,
-        deleteTask
+        deleteTask,
     }
 }
