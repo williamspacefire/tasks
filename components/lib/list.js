@@ -6,6 +6,7 @@ export default function listLogic() {
 
     if (process.browser) {
         db = new LocalStorage("tasks");
+        if (typeof db.get("myTask")[1] == "undefined") db.put("myTask", []);
     }
 
     const [list, setList] = useState(db ? db.get("myTask")[1] : []);
