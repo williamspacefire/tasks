@@ -13,6 +13,8 @@ export default function listLogic() {
 
     const [newTaskModalOpen, setNewTaskModalOpen] = useState(false)
 
+    const [addButtonDisabled, setAddButtonDisabled] = useState(true)
+
     let newTask = ''
 
     function updateListStorage(data = null) {
@@ -34,10 +36,12 @@ export default function listLogic() {
         updateListStorage(newList)
         handleCloseNewTaskModal()
         newTask = ''
+        setAddButtonDisabled(true)
     }
 
     function updateNewtask(e) {
         newTask = e.target.value
+        setAddButtonDisabled(newTask == '')
     }
 
     function handleCheck(e) {
@@ -67,12 +71,13 @@ export default function listLogic() {
 
     return {
         list,
+        newTaskModalOpen,
+        addButtonDisabled,
         addNewTask,
         updateNewtask,
         handleCheck,
         deleteTask,
         handleOpenNewTaskModal,
         handleCloseNewTaskModal,
-        newTaskModalOpen,
     }
 }

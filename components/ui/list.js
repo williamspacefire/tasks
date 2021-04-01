@@ -22,19 +22,19 @@ import listLogic from '../lib/list'
 export default function TaskList() {
     const {
         list,
+        newTaskModalOpen,
+        addButtonDisabled,
         addNewTask,
         updateNewtask,
         handleCheck,
         deleteTask,
         handleOpenNewTaskModal,
         handleCloseNewTaskModal,
-        newTaskModalOpen,
     } = listLogic()
 
     const modalStyle = {
         position: 'absolute',
         width: '50%',
-        //border: '2px solid #000',
         boxShadow: '20px',
         padding: '10px',
         top: '50%',
@@ -144,12 +144,12 @@ export default function TaskList() {
                         id='add-new-task'
                         label='Adicionar nova tarefa'
                     />
-                    <br />
-                    <br />
                     <Button
+                        style={{ marginTop: '10px' }}
                         onClick={addNewTask}
                         variant='contained'
                         color='primary'
+                        disabled={addButtonDisabled}
                     >
                         Add task
                     </Button>
