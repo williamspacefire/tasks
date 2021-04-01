@@ -1,4 +1,8 @@
 import {
+    Button,
+    Card,
+    CardContent,
+    CardHeader,
     Checkbox,
     Divider,
     Fab,
@@ -8,11 +12,12 @@ import {
     ListItemSecondaryAction,
     ListItemText,
     ListSubheader,
+    Modal,
     Paper,
     TextField,
-} from "@material-ui/core";
-import { Add, Delete } from "@material-ui/icons";
-import listLogic from "../lib/list";
+} from '@material-ui/core'
+import { Add, Close, Delete } from '@material-ui/icons'
+import listLogic from '../lib/list'
 
 export default function TaskList() {
     const {
@@ -21,27 +26,69 @@ export default function TaskList() {
         updateNewtask,
         handleCheck,
         deleteTask,
-    } = listLogic();
+        handleOpenNewTaskModal,
+        handleCloseNewTaskModal,
+        newTaskModalOpen,
+    } = listLogic()
+
+    const modalStyle = {
+        position: 'absolute',
+        width: '50%',
+        //border: '2px solid #000',
+        boxShadow: '20px',
+        padding: '10px',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+    }
 
     return (
         <>
             <Fab
-                style={{ marginTop: "34px" }}
-                color="primary"
-                aria-label="Nova Tarefa">
+                onClick={handleOpenNewTaskModal}
+                variant='extended'
+                style={{ marginTop: '34px' }}
+                aria-label='Nova Tarefa'
+            >
                 <Add />
+                ADD NEW TASK
             </Fab>
-            <Paper style={{ marginTop: "34px" }}>
-                <AddNewTask style={{ display: "none" }} />
+            <Modal
+                disableEnforceFocus
+                open={newTaskModalOpen}
+                onClose={handleCloseNewTaskModal}
+                aria-labelledby='add-new-task'
+                aria-describedby='simple-modal-description'
+            >
+                <Card style={modalStyle}>
+                    <CardHeader
+                        action={
+                            <IconButton
+                                aria-label='close'
+                                onClick={handleCloseNewTaskModal}
+                            >
+                                <Close />
+                            </IconButton>
+                        }
+                        title='Add new task'
+                    />
+                    <CardContent>
+                        <AddNewTask />
+                    </CardContent>
+                </Card>
+            </Modal>
+            <Paper style={{ marginTop: '34px' }}>
                 <List
-                    component="nav"
+                    component='nav'
                     subheader={
                         <ListSubheader
-                            component="div"
-                            id="nested-list-subheader">
+                            component='div'
+                            id='nested-list-subheader'
+                        >
                             TAREFAS A FAZER
                         </ListSubheader>
-                    }>
+                    }
+                >
                     <Divider />
                     {list.map((task, index) => {
                         if (!task.completed)
@@ -52,18 +99,20 @@ export default function TaskList() {
                                     checked={task.completed}
                                     id={index}
                                 />
-                            );
+                            )
                     })}
                 </List>
                 <List
-                    component="nav"
+                    component='nav'
                     subheader={
                         <ListSubheader
-                            component="div"
-                            id="nested-list-subheader">
+                            component='div'
+                            id='nested-list-subheader'
+                        >
                             TAREFAS COMPLETADAS
                         </ListSubheader>
-                    }>
+                    }
+                >
                     <Divider />
                     {list.map((task, index) => {
                         if (task.completed)
@@ -74,28 +123,39 @@ export default function TaskList() {
                                     checked={task.completed}
                                     id={index}
                                 />
-                            );
+                            )
                     })}
                 </List>
             </Paper>
         </>
-    );
+    )
 
     function AddNewTask() {
         return (
             <>
-                <ListItem style={{ padding: "20px" }}>
-                    <form action="/" onSubmit={addNewTask}>
-                        <TextField
-                            onChange={updateNewtask}
-                            style={{ width: "100%" }}
-                            id="add-new-task"
-                            label="Adicionar nova tarefa"
-                        />
-                    </form>
-                </ListItem>
+                <form
+                    action='/'
+                    onSubmit={addNewTask}
+                    style={{ width: '100%' }}
+                >
+                    <TextField
+                        onChange={updateNewtask}
+                        style={{ width: '100%' }}
+                        id='add-new-task'
+                        label='Adicionar nova tarefa'
+                    />
+                    <br />
+                    <br />
+                    <Button
+                        onClick={addNewTask}
+                        variant='contained'
+                        color='primary'
+                    >
+                        Add task
+                    </Button>
+                </form>
             </>
-        );
+        )
     }
 
     function TaskListItem({ title, checked, id }) {
@@ -112,14 +172,15 @@ export default function TaskList() {
                     </ListItemText>
                     <ListItemSecondaryAction>
                         <IconButton
-                            edge="end"
-                            aria-label="delete"
-                            onClick={(e) => deleteTask(e, id)}>
+                            edge='end'
+                            aria-label='delete'
+                            onClick={e => deleteTask(e, id)}
+                        >
                             <Delete />
                         </IconButton>
                     </ListItemSecondaryAction>
                 </ListItem>
             </>
-        );
+        )
     }
 }
