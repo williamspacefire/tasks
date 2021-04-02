@@ -4,15 +4,14 @@ export default function listLogic() {
     const LocalStorage = require('localstorage')
     var db
 
+    //TODO: Work on a better code
     if (process.browser) {
         db = new LocalStorage('tasks')
         if (typeof db.get('myTask')[1] == 'undefined') db.put('myTask', [])
     }
 
     const [list, setList] = useState(db ? db.get('myTask')[1] : [])
-
     const [newTaskModalOpen, setNewTaskModalOpen] = useState(false)
-
     const [addButtonDisabled, setAddButtonDisabled] = useState(true)
 
     let newTask = ''
