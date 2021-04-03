@@ -10,32 +10,10 @@ import {
     Paper,
 } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
-import listLogic from '../lib/list'
-import { AddTask } from './addtask'
 
-export default function TaskList() {
-    const {
-        list,
-        newTaskModalOpen,
-        addButtonDisabled,
-        addNewTask,
-        updateNewtask,
-        handleCheck,
-        deleteTask,
-        handleOpenNewTaskModal,
-        handleCloseNewTaskModal,
-    } = listLogic()
-
+export default function TaskList({ handleCheck, list, deleteTask }) {
     return (
         <>
-            <AddTask
-                handleCloseNewTaskModal={handleCloseNewTaskModal}
-                handleOpenNewTaskModal={handleOpenNewTaskModal}
-                newTaskModalOpen={newTaskModalOpen}
-                addButtonDisabled={addButtonDisabled}
-                addNewTask={addNewTask}
-                updateNewtask={updateNewtask}
-            />
             <Paper style={{ marginTop: '34px' }}>
                 <List
                     component='nav'
