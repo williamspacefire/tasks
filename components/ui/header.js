@@ -6,7 +6,7 @@ export default function Header() {
             <title>Spacefire Tasks</title>
             <AppBar position='fixed'>
                 <Toolbar>
-                    <Typography variant='h6'>TO DO</Typography>
+                    <Typography variant='h6'>Spacefire Task</Typography>
                 </Toolbar>
             </AppBar>
             <Toolbar />

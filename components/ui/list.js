@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 
+//TODO: Remove duplicate code
 export default function TaskList({ handleCheck, list, deleteTask }) {
     return (
         <>
@@ -39,6 +40,8 @@ export default function TaskList({ handleCheck, list, deleteTask }) {
                             )
                     })}
                 </List>
+            </Paper>
+            <Paper style={{ marginTop: '34px' }}>
                 <List
                     component='nav'
                     subheader={
