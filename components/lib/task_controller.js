@@ -1,5 +1,8 @@
 import { useState } from 'react'
 
+export const TASK_COMPLETED = 'completed'
+export const TASK_TO_DO = 'todo'
+
 export default function listLogic() {
     const LocalStorage = require('localstorage')
     var db
@@ -28,7 +31,10 @@ export default function listLogic() {
 
         if (newTask == '') return
 
-        const newList = [{ completed: false, task: newTask }, ...list]
+        const newList = [
+            { completed: false, task: newTask, id: list.length + 1 },
+            ...list,
+        ]
 
         setList(newList)
         console.log(JSON.stringify(newList, null, 2))

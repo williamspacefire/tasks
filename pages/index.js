@@ -1,6 +1,6 @@
 import Header from '../components/ui/header'
-import TaskList from '../components/ui/list'
-import listLogic from '../components/lib/list'
+import TaskList from '../components/ui/task'
+import listLogic from '../components/lib/task_controller'
 import { AddTask } from '../components/ui/addtask'
 
 export default function Index() {
