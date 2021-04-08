@@ -1,37 +1,43 @@
-import Header from '../components/ui/header'
-import TaskList from '../components/ui/task'
-import listLogic from '../components/lib/task_controller'
-import { AddTask } from '../components/ui/addtask'
+import Header from '../view/header'
+import TaskList from '../view/task'
+import listLogic from '../infrastructure/task_controller'
+import { AddTask } from '../view/addtask'
+import { StoreMe } from 'store-me'
 
 export default function Index() {
     const {
         list,
-        newTaskModalOpen,
-        addButtonDisabled,
+        isAddTaskButtonDisabled,
         addNewTask,
         updateNewtask,
         handleCheck,
         deleteTask,
-        handleOpenNewTaskModal,
-        handleCloseNewTaskModal,
     } = listLogic()
+
+    const initialState = {
+        isModalOpen: false,
+        isAddTaskButtonDisabled: true,
+        task: {
+            completed: [],
+            todo: [],
+        },
+    }
 
     return (
         <>
-            <Header />
-            <AddTask
-                handleCloseNewTaskModal={handleCloseNewTaskModal}
-                handleOpenNewTaskModal={handleOpenNewTaskModal}
-                newTaskModalOpen={newTaskModalOpen}
-                addButtonDisabled={addButtonDisabled}
-                addNewTask={addNewTask}
-                updateNewtask={updateNewtask}
-            />
-            <TaskList
-                handleCheck={handleCheck}
-                deleteTask={deleteTask}
-                list={list}
-            />
+            <StoreMe initialState={initialState}>
+                <Header />
+                <AddTask
+                    isAddTaskButtonDisabled={isAddTaskButtonDisabled}
+                    addNewTask={addNewTask}
+                    updateNewtask={updateNewtask}
+                />
+                <TaskList
+                    handleCheck={handleCheck}
+                    deleteTask={deleteTask}
+                    list={list}
+                />
+            </StoreMe>
         </>
     )
 }

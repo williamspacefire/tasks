@@ -10,7 +10,7 @@ import {
     Paper,
 } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
-import { TASK_COMPLETED, TASK_TO_DO } from '../lib/task_controller'
+import { TASK_COMPLETED, TASK_TO_DO } from '../infrastructure/task_controller'
 
 //TODO: Remove duplicate code
 export default function TaskList({ handleCheck, list, deleteTask }) {

@@ -1,12 +1,25 @@
 import { useState } from 'react'
+import { getStoreMe, setStoreMe } from 'store-me'
+
+const LocalStorage = require('localstorage')
+var db
 
 export const TASK_COMPLETED = 'completed'
 export const TASK_TO_DO = 'todo'
 
-export default function listLogic() {
-    const LocalStorage = require('localstorage')
-    var db
+export function changeModalVisibility() {
+    const { isModalOpen } = getStoreMe('isModalOpen')
+    setStoreMe({ isModalOpen: !isModalOpen })
+}
 
+function updateTaskLocalStorage({ data }) {
+    if (!process.browser) return
+
+    const db = new LocalStorage('tasks')
+    db.put('myTask', data)
+}
+
+export default function listLogic() {
     //TODO: Work on a better code
     if (process.browser) {
         db = new LocalStorage('tasks')
@@ -14,17 +27,9 @@ export default function listLogic() {
     }
 
     const [list, setList] = useState(db ? db.get('myTask')[1] : [])
-    const [newTaskModalOpen, setNewTaskModalOpen] = useState(false)
-    const [addButtonDisabled, setAddButtonDisabled] = useState(true)
+    const [isAddTaskButtonDisabled, setisAddTaskButtonDisabled] = useState(true)
 
     let newTask = ''
-
-    function updateListStorage(data = null) {
-        if (process.browser) {
-            const db = new LocalStorage('tasks')
-            db.put('myTask', data ? data : list)
-        }
-    }
 
     function addNewTask(e) {
         e.preventDefault()
@@ -38,15 +43,15 @@ export default function listLogic() {
 
         setList(newList)
         console.log(JSON.stringify(newList, null, 2))
-        updateListStorage(newList)
-        handleCloseNewTaskModal()
+        updateTaskLocalStorage({ data: newList })
         newTask = ''
-        setAddButtonDisabled(true)
+        setisAddTaskButtonDisabled(true)
+        changeModalVisibility()
     }
 
     function updateNewtask(e) {
         newTask = e.target.value
-        setAddButtonDisabled(newTask == '')
+        setisAddTaskButtonDisabled(newTask == '')
     }
 
     function handleCheck(e) {
@@ -55,7 +60,7 @@ export default function listLogic() {
         list[id].completed = cheked
 
         setList([...list])
-        updateListStorage()
+        updateTaskLocalStorage({ data: list })
     }
 
     function deleteTask(e, id) {
@@ -63,26 +68,15 @@ export default function listLogic() {
         listCopy.splice(id, 1)
 
         setList([...listCopy])
-        updateListStorage()
-    }
-
-    function handleOpenNewTaskModal() {
-        setNewTaskModalOpen(true)
-    }
-
-    function handleCloseNewTaskModal() {
-        setNewTaskModalOpen(false)
+        updateTaskLocalStorage({ data: list })
     }
 
     return {
         list,
-        newTaskModalOpen,
-        addButtonDisabled,
+        isAddTaskButtonDisabled,
         addNewTask,
         updateNewtask,
         handleCheck,
         deleteTask,
-        handleOpenNewTaskModal,
-        handleCloseNewTaskModal,
     }
 }

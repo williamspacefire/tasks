@@ -9,19 +9,20 @@ import {
     TextField,
 } from '@material-ui/core'
 import { Add, Close } from '@material-ui/icons'
+import { useStoreMe, setStoreMe } from 'store-me'
+import { changeModalVisibility } from '../infrastructure/task_controller'
 
 export function AddTask({
-    handleOpenNewTaskModal,
-    handleCloseNewTaskModal,
-    newTaskModalOpen,
-    addButtonDisabled,
+    isAddTaskButtonDisabled,
     addNewTask,
     updateNewtask,
 }) {
+    const { isModalOpen } = useStoreMe('isModalOpen')
+
     return (
         <>
             <Fab
-                onClick={handleOpenNewTaskModal}
+                onClick={() => changeModalVisibility()}
                 variant='extended'
                 style={{ marginTop: '34px' }}
                 aria-label='Nova Tarefa'
@@ -31,14 +32,13 @@ export function AddTask({
             </Fab>
             <Modal
                 disableEnforceFocus
-                open={newTaskModalOpen}
-                onClose={handleCloseNewTaskModal}
+                open={isModalOpen}
+                onClose={() => changeModalVisibility()}
                 aria-labelledby='add-new-task'
                 aria-describedby='simple-modal-description'
             >
                 <ModalContent
-                    handleCloseNewTaskModal={handleCloseNewTaskModal}
-                    addButtonDisabled={addButtonDisabled}
+                    isAddTaskButtonDisabled={isAddTaskButtonDisabled}
                     addNewTask={addNewTask}
                     updateNewtask={updateNewtask}
                 />
@@ -47,12 +47,7 @@ export function AddTask({
     )
 }
 
-function ModalContent({
-    handleCloseNewTaskModal,
-    addButtonDisabled,
-    addNewTask,
-    updateNewtask,
-}) {
+function ModalContent({ isAddTaskButtonDisabled, addNewTask, updateNewtask }) {
     const modalStyle = {
         position: 'absolute',
         width: '50%',
@@ -69,7 +64,7 @@ function ModalContent({
                 action={
                     <IconButton
                         aria-label='close'
-                        onClick={handleCloseNewTaskModal}
+                        onClick={() => changeModalVisibility()}
                     >
                         <Close />
                     </IconButton>
@@ -78,7 +73,7 @@ function ModalContent({
             />
             <CardContent>
                 <AddNewTask
-                    addButtonDisabled={addButtonDisabled}
+                    isAddTaskButtonDisabled={isAddTaskButtonDisabled}
                     addNewTask={addNewTask}
                     updateNewtask={updateNewtask}
                 />
@@ -87,7 +82,7 @@ function ModalContent({
     )
 }
 
-function AddNewTask({ addButtonDisabled, addNewTask, updateNewtask }) {
+function AddNewTask({ isAddTaskButtonDisabled, addNewTask, updateNewtask }) {
     return (
         <>
             <form action='/' onSubmit={addNewTask} style={{ width: '100%' }}>
@@ -102,7 +97,7 @@ function AddNewTask({ addButtonDisabled, addNewTask, updateNewtask }) {
                     onClick={addNewTask}
                     variant='contained'
                     color='primary'
-                    disabled={addButtonDisabled}
+                    disabled={isAddTaskButtonDisabled}
                 >
                     Add task
                 </Button>
