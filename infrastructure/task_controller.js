@@ -51,7 +51,10 @@ export default function listLogic() {
 
     function updateNewtask(e) {
         newTask = e.target.value
-        setisAddTaskButtonDisabled(newTask == '')
+        const { isAddTaskButtonDisabled } = getStoreMe(
+            'isAddTaskButtonDisabled'
+        )
+        setStoreMe({ isAddTaskButtonDisabled: newTask.length === 0 })
     }
 
     function handleCheck(e) {

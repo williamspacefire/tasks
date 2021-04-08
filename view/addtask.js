@@ -12,11 +12,7 @@ import { Add, Close } from '@material-ui/icons'
 import { useStoreMe, setStoreMe } from 'store-me'
 import { changeModalVisibility } from '../infrastructure/task_controller'
 
-export function AddTask({
-    isAddTaskButtonDisabled,
-    addNewTask,
-    updateNewtask,
-}) {
+export function AddTask({ addNewTask, updateNewtask }) {
     const { isModalOpen } = useStoreMe('isModalOpen')
 
     return (
@@ -38,7 +34,6 @@ export function AddTask({
                 aria-describedby='simple-modal-description'
             >
                 <ModalContent
-                    isAddTaskButtonDisabled={isAddTaskButtonDisabled}
                     addNewTask={addNewTask}
                     updateNewtask={updateNewtask}
                 />
@@ -47,7 +42,7 @@ export function AddTask({
     )
 }
 
-function ModalContent({ isAddTaskButtonDisabled, addNewTask, updateNewtask }) {
+function ModalContent({ addNewTask, updateNewtask }) {
     const modalStyle = {
         position: 'absolute',
         width: '50%',
@@ -73,7 +68,6 @@ function ModalContent({ isAddTaskButtonDisabled, addNewTask, updateNewtask }) {
             />
             <CardContent>
                 <AddNewTask
-                    isAddTaskButtonDisabled={isAddTaskButtonDisabled}
                     addNewTask={addNewTask}
                     updateNewtask={updateNewtask}
                 />
@@ -82,7 +76,9 @@ function ModalContent({ isAddTaskButtonDisabled, addNewTask, updateNewtask }) {
     )
 }
 
-function AddNewTask({ isAddTaskButtonDisabled, addNewTask, updateNewtask }) {
+function AddNewTask({ addNewTask, updateNewtask }) {
+    const { isAddTaskButtonDisabled } = useStoreMe('isAddTaskButtonDisabled')
+
     return (
         <>
             <form action='/' onSubmit={addNewTask} style={{ width: '100%' }}>

@@ -7,7 +7,6 @@ import { StoreMe } from 'store-me'
 export default function Index() {
     const {
         list,
-        isAddTaskButtonDisabled,
         addNewTask,
         updateNewtask,
         handleCheck,
@@ -28,7 +27,6 @@ export default function Index() {
             <StoreMe initialState={initialState}>
                 <Header />
                 <AddTask
-                    isAddTaskButtonDisabled={isAddTaskButtonDisabled}
                     addNewTask={addNewTask}
                     updateNewtask={updateNewtask}
                 />
