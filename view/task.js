@@ -10,39 +10,38 @@ import {
     Paper,
 } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
-import { TASK_COMPLETED, TASK_TO_DO } from '../infrastructure/task_controller'
+import { useStoreMe } from 'store-me'
+import {
+    deleteTask,
+    getListTypeCondition,
+    handleCheck,
+    TASK_COMPLETED,
+    TASK_TO_DO,
+} from '../infrastructure/task_controller'
 
 //TODO: Remove duplicate code
-export default function TaskList({ handleCheck, list, deleteTask }) {
+export default function TaskList() {
+    const { tasks } = useStoreMe('tasks')
+
     return (
         <>
-            <Paper style={{ marginTop: '34px' }}>
-                <TaskList
-                    title='TAREFAS A FAZER'
-                    type={TASK_TO_DO}
-                    tasks={list}
-                />
-            </Paper>
-            <Paper style={{ marginTop: '34px' }}>
-                <TaskList
-                    title='TAREFAS COMPLETADAS'
-                    type={TASK_COMPLETED}
-                    tasks={list}
-                />
-            </Paper>
+            <TaskListGroup
+                title='TAREFAS A FAZER'
+                type={TASK_TO_DO}
+                tasks={tasks}
+            />
+            <TaskListGroup
+                title='TAREFAS COMPLETADAS'
+                type={TASK_COMPLETED}
+                tasks={tasks}
+            />
         </>
     )
+}
 
-    function TaskList({ tasks, title, type }) {
-        const getListTypeCondition = (task, type) => {
-            if (type == TASK_COMPLETED) {
-                return task.completed
-            } else {
-                return !task.completed
-            }
-        }
-
-        return (
+export function TaskListGroup({ tasks, title, type }) {
+    return (
+        <Paper style={{ marginTop: '34px' }}>
             <List
                 component='nav'
                 subheader={
@@ -55,7 +54,7 @@ export default function TaskList({ handleCheck, list, deleteTask }) {
                 {tasks.map((task, index) => {
                     if (getListTypeCondition(task, type))
                         return (
-                            <TaskListItem
+                            <TaskListGroupItem
                                 key={index}
                                 title={task.task}
                                 checked={task.completed}
@@ -64,32 +63,32 @@ export default function TaskList({ handleCheck, list, deleteTask }) {
                         )
                 })}
             </List>
-        )
-    }
+        </Paper>
+    )
+}
 
-    function TaskListItem({ title, checked, id }) {
-        return (
-            <>
-                <ListItem>
-                    <ListItemText>
-                        <Checkbox
-                            checked={checked}
-                            id={id}
-                            onChange={handleCheck}
-                        />
-                        {title}
-                    </ListItemText>
-                    <ListItemSecondaryAction>
-                        <IconButton
-                            edge='end'
-                            aria-label='delete'
-                            onClick={e => deleteTask(e, id)}
-                        >
-                            <Delete />
-                        </IconButton>
-                    </ListItemSecondaryAction>
-                </ListItem>
-            </>
-        )
-    }
+export function TaskListGroupItem({ title, checked, id }) {
+    return (
+        <>
+            <ListItem>
+                <ListItemText>
+                    <Checkbox
+                        checked={checked}
+                        id={id}
+                        onChange={handleCheck}
+                    />
+                    {title}
+                </ListItemText>
+                <ListItemSecondaryAction>
+                    <IconButton
+                        edge='end'
+                        aria-label='delete'
+                        onClick={e => deleteTask(e, id)}
+                    >
+                        <Delete />
+                    </IconButton>
+                </ListItemSecondaryAction>
+            </ListItem>
+        </>
+    )
 }

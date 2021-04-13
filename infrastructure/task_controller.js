@@ -1,8 +1,8 @@
-import { useState } from 'react'
 import { getStoreMe, setStoreMe } from 'store-me'
 
 const LocalStorage = require('localstorage')
 var db
+let newTask = ''
 
 export const TASK_COMPLETED = 'completed'
 export const TASK_TO_DO = 'todo'
@@ -19,61 +19,56 @@ function updateTaskLocalStorage(data) {
     ls.put('myTask', data)
 }
 
-export default function listLogic() {
-    //TODO: Work on a better code
-    if (process.browser) {
-        db = new LocalStorage('tasks')
-        if (typeof db.get('myTask')[1] == 'undefined') db.put('myTask', [])
-    }
+export const addNewTask = e => {
+    e.preventDefault()
 
-    const [list, setList] = useState(db ? db.get('myTask')[1] : [])
+    if (newTask == '') return
 
-    let newTask = ''
+    const { tasks } = getStoreMe('tasks')
 
-    function addNewTask(e) {
-        e.preventDefault()
+    const newList = [
+        { completed: false, task: newTask, id: tasks.length + 1 },
+        ...tasks,
+    ]
 
-        if (newTask == '') return
+    newTask = ''
+    setStoreMe({ tasks: newList, isAddTaskButtonDisabled: true })
+    updateTaskLocalStorage(newList)
+    changeModalVisibility()
+}
 
-        const newList = [
-            { completed: false, task: newTask, id: list.length + 1 },
-            ...list,
-        ]
+const isNewTaskEmpty = () => newTask.length === 0
 
-        setList(newList)
-        updateTaskLocalStorage(newList)
-        newTask = ''
-        setStoreMe({ isAddTaskButtonDisabled: true })
-        changeModalVisibility()
-    }
+export const updateNewtask = e => {
+    newTask = e.target.value
+    setStoreMe({ isAddTaskButtonDisabled: isNewTaskEmpty() })
+}
 
-    function updateNewtask(e) {
-        newTask = e.target.value
-        setStoreMe({ isAddTaskButtonDisabled: newTask.length === 0 })
-    }
+export const handleCheck = e => {
+    const { tasks } = getStoreMe('tasks')
+    const id = e.target.id
+    const cheked = e.target.checked
 
-    function handleCheck(e) {
-        const id = e.target.id
-        const cheked = e.target.checked
-        list[id].completed = cheked
+    tasks[id].completed = cheked
 
-        setList([...list])
-        updateTaskLocalStorage(list)
-    }
+    setStoreMe({ tasks: tasks })
+    updateTaskLocalStorage(tasks)
+}
 
-    function deleteTask(e, id) {
-        let listCopy = list
-        listCopy.splice(id, 1)
+export const deleteTask = (e, id) => {
+    const { tasks } = getStoreMe('tasks')
 
-        setList([...listCopy])
-        updateTaskLocalStorage(list)
-    }
+    let listCopy = tasks
+    listCopy.splice(id, 1)
 
-    return {
-        list,
-        addNewTask,
-        updateNewtask,
-        handleCheck,
-        deleteTask,
+    setStoreMe({ tasks: listCopy })
+    updateTaskLocalStorage(tasks)
+}
+
+export const getListTypeCondition = (task, type) => {
+    if (type == TASK_COMPLETED) {
+        return task.completed
+    } else {
+        return !task.completed
     }
 }

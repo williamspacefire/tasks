@@ -9,10 +9,14 @@ import {
     TextField,
 } from '@material-ui/core'
 import { Add, Close } from '@material-ui/icons'
-import { useStoreMe, setStoreMe } from 'store-me'
-import { changeModalVisibility } from '../infrastructure/task_controller'
+import { useStoreMe } from 'store-me'
+import {
+    addNewTask,
+    changeModalVisibility,
+    updateNewtask,
+} from '../infrastructure/task_controller'
 
-export function AddTask({ addNewTask, updateNewtask }) {
+export function AddTask() {
     const { isModalOpen } = useStoreMe('isModalOpen')
 
     return (
@@ -33,16 +37,13 @@ export function AddTask({ addNewTask, updateNewtask }) {
                 aria-labelledby='add-new-task'
                 aria-describedby='simple-modal-description'
             >
-                <ModalContent
-                    addNewTask={addNewTask}
-                    updateNewtask={updateNewtask}
-                />
+                <ModalContent />
             </Modal>
         </>
     )
 }
 
-function ModalContent({ addNewTask, updateNewtask }) {
+function ModalContent() {
     const modalStyle = {
         position: 'absolute',
         width: '50%',
@@ -67,16 +68,13 @@ function ModalContent({ addNewTask, updateNewtask }) {
                 title='Add new task'
             />
             <CardContent>
-                <AddNewTask
-                    addNewTask={addNewTask}
-                    updateNewtask={updateNewtask}
-                />
+                <AddNewTask />
             </CardContent>
         </Card>
     )
 }
 
-function AddNewTask({ addNewTask, updateNewtask }) {
+function AddNewTask() {
     const { isAddTaskButtonDisabled } = useStoreMe('isAddTaskButtonDisabled')
 
     return (
