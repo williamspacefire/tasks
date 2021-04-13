@@ -2,6 +2,7 @@ import Header from '../view/header'
 import TaskList from '../view/task'
 import listLogic from '../infrastructure/task_controller'
 import { AddTask } from '../view/addtask'
+import { Initializer } from '../infrastructure/initializer'
 import { StoreMe } from 'store-me'
 
 export default function Index() {
@@ -13,18 +14,10 @@ export default function Index() {
         deleteTask,
     } = listLogic()
 
-    const initialState = {
-        isModalOpen: false,
-        isAddTaskButtonDisabled: true,
-        task: {
-            completed: [],
-            todo: [],
-        },
-    }
-
     return (
         <>
-            <StoreMe initialState={initialState}>
+            <StoreMe>
+                <Initializer />
                 <Header />
                 <AddTask
                     addNewTask={addNewTask}
