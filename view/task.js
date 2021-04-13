@@ -10,38 +10,39 @@ import {
     Paper,
 } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
-import { useStoreMe } from 'store-me'
-import {
-    deleteTask,
-    getListTypeCondition,
-    handleCheck,
-    TASK_COMPLETED,
-    TASK_TO_DO,
-} from '../infrastructure/task_controller'
+import { TASK_COMPLETED, TASK_TO_DO } from '../infrastructure/task_controller'
 
 //TODO: Remove duplicate code
-export default function TaskList() {
-    const { tasks } = useStoreMe('tasks')
-
+export default function TaskList({ handleCheck, list, deleteTask }) {
     return (
         <>
-            <TaskListGroup
-                title='TAREFAS A FAZER'
-                type={TASK_TO_DO}
-                tasks={tasks}
-            />
-            <TaskListGroup
-                title='TAREFAS COMPLETADAS'
-                type={TASK_COMPLETED}
-                tasks={tasks}
-            />
+            <Paper style={{ marginTop: '34px' }}>
+                <TaskList
+                    title='TAREFAS A FAZER'
+                    type={TASK_TO_DO}
+                    tasks={list}
+                />
+            </Paper>
+            <Paper style={{ marginTop: '34px' }}>
+                <TaskList
+                    title='TAREFAS COMPLETADAS'
+                    type={TASK_COMPLETED}
+                    tasks={list}
+                />
+            </Paper>
         </>
     )
-}
 
-export function TaskListGroup({ tasks, title, type }) {
-    return (
-        <Paper style={{ marginTop: '34px' }}>
+    function TaskList({ tasks, title, type }) {
+        const getListTypeCondition = (task, type) => {
+            if (type == TASK_COMPLETED) {
+                return task.completed
+            } else {
+                return !task.completed
+            }
+        }
+
+        return (
             <List
                 component='nav'
                 subheader={
@@ -54,7 +55,7 @@ export function TaskListGroup({ tasks, title, type }) {
                 {tasks.map((task, index) => {
                     if (getListTypeCondition(task, type))
                         return (
-                            <TaskListGroupItem
+                            <TaskListItem
                                 key={index}
                                 title={task.task}
                                 checked={task.completed}
@@ -63,32 +64,32 @@ export function TaskListGroup({ tasks, title, type }) {
                         )
                 })}
             </List>
-        </Paper>
-    )
-}
+        )
+    }
 
-export function TaskListGroupItem({ title, checked, id }) {
-    return (
-        <>
-            <ListItem>
-                <ListItemText>
-                    <Checkbox
-                        checked={checked}
-                        id={id}
-                        onChange={handleCheck}
-                    />
-                    {title}
-                </ListItemText>
-                <ListItemSecondaryAction>
-                    <IconButton
-                        edge='end'
-                        aria-label='delete'
-                        onClick={e => deleteTask(e, id)}
-                    >
-                        <Delete />
-                    </IconButton>
-                </ListItemSecondaryAction>
-            </ListItem>
-        </>
-    )
+    function TaskListItem({ title, checked, id }) {
+        return (
+            <>
+                <ListItem>
+                    <ListItemText>
+                        <Checkbox
+                            checked={checked}
+                            id={id}
+                            onChange={handleCheck}
+                        />
+                        {title}
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                        <IconButton
+                            edge='end'
+                            aria-label='delete'
+                            onClick={e => deleteTask(e, id)}
+                        >
+                            <Delete />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                </ListItem>
+            </>
+        )
+    }
 }

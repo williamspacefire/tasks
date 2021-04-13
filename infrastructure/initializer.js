@@ -1,4 +1,4 @@
-import { setStoreMe } from 'store-me'
+import { getStoreMe, setStoreMe } from 'store-me'
 
 const LocalStorage = require('localstorage')
 var db
