@@ -1,7 +1,6 @@
 import { getStoreMe, setStoreMe } from 'store-me'
 
 const LocalStorage = require('localstorage')
-var db
 let newTask = ''
 
 export const TASK_COMPLETED = 'completed'
